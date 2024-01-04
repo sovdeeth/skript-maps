@@ -42,13 +42,16 @@ public class ExprMapLayers extends PropertyExpression<MapView, MapRenderer> {
 
     @Override
     protected MapRenderer[] get(Event event, MapView[] source) {
+        if (source.length == 0)
+            return new MapRenderer[0];
         return source[0].getRenderers().toArray(new MapRenderer[0]);
     }
 
     @Override
     public Class<?> @Nullable [] acceptChange(Changer.ChangeMode mode) {
         return switch (mode) {
-            case ADD, REMOVE, SET, DELETE -> new Class[]{MapRenderer[].class};
+            case ADD, REMOVE, SET -> new Class[]{MapRenderer[].class};
+            case DELETE -> new Class[]{};
             default -> null;
         };
     }

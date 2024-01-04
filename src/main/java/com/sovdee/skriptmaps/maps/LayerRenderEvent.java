@@ -1,4 +1,4 @@
-package com.sovdee.skriptmaps;
+package com.sovdee.skriptmaps.maps;
 
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
@@ -9,7 +9,7 @@ import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapView;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class MapLayerRenderEvent extends Event {
+public class LayerRenderEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
@@ -18,21 +18,21 @@ public class MapLayerRenderEvent extends Event {
     private final Player player;
 
     static {
-        EventValues.registerEventValue(MapLayerRenderEvent.class, MapView.class, new Getter<>() {
+        EventValues.registerEventValue(LayerRenderEvent.class, MapView.class, new Getter<>() {
             @Override
-            public MapView get(MapLayerRenderEvent event) {
+            public MapView get(LayerRenderEvent event) {
                 return event.getMapView();
             }
         }, EventValues.TIME_NOW);
-        EventValues.registerEventValue(MapLayerRenderEvent.class, Player.class, new Getter<>() {
+        EventValues.registerEventValue(LayerRenderEvent.class, Player.class, new Getter<>() {
             @Override
-            public Player get(MapLayerRenderEvent event) {
+            public Player get(LayerRenderEvent event) {
                 return event.getPlayer();
             }
         }, EventValues.TIME_NOW);
     }
 
-    public MapLayerRenderEvent(MapView mapView, MapCanvas canvas, Player player) {
+    public LayerRenderEvent(MapView mapView, MapCanvas canvas, Player player) {
         super();
         this.mapView = mapView;
         this.canvas = canvas;

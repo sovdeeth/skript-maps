@@ -8,7 +8,7 @@ import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.util.Color;
-import com.sovdee.skriptmaps.MapLayerRenderEvent;
+import com.sovdee.skriptmaps.maps.LayerRenderEvent;
 import com.sovdee.skriptmaps.utils.AWTColorUtils;
 import com.sovdee.skriptmaps.utils.LayerEffect;
 import org.bukkit.event.Event;
@@ -70,7 +70,7 @@ public class EffDrawMapPixels extends LayerEffect {
     }
 
     @Override
-    protected void execute(MapLayerRenderEvent event) {
+    protected void execute(LayerRenderEvent event) {
         @Nullable Number x1 = this.x1.getSingle(event);
         @Nullable Number y1 = this.y1.getSingle(event);
         @Nullable Color color = this.color.getSingle(event);
@@ -104,7 +104,7 @@ public class EffDrawMapPixels extends LayerEffect {
         }
     }
 
-    private void drawRect(MapLayerRenderEvent event, int x1, int y1, int x2, int y2, java.awt.Color color) {
+    private void drawRect(LayerRenderEvent event, int x1, int y1, int x2, int y2, java.awt.Color color) {
         int minX = Math.min(x1, x2);
         int maxX = Math.max(x1, x2);
         int minY = Math.min(y1, y2);
@@ -114,7 +114,7 @@ public class EffDrawMapPixels extends LayerEffect {
                 setPixelColor(event, x, y, color);
     }
 
-    private void drawLine(MapLayerRenderEvent event, int x1, int y1, int x2, int y2, java.awt.Color color) {
+    private void drawLine(LayerRenderEvent event, int x1, int y1, int x2, int y2, java.awt.Color color) {
         int dx = Math.abs(x2 - x1);
         int dy = Math.abs(y2 - y1);
         int sx = x1 < x2 ? 1 : -1;
@@ -137,7 +137,7 @@ public class EffDrawMapPixels extends LayerEffect {
     }
 
     // draws a solid disc around the center point
-    private void drawCircle(MapLayerRenderEvent event, int x0, int y0, int radius, java.awt.Color color) {
+    private void drawCircle(LayerRenderEvent event, int x0, int y0, int radius, java.awt.Color color) {
         int x1 = x0 - radius;
         int y1 = y0 - radius;
         int x2 = x0 + radius;
@@ -149,7 +149,7 @@ public class EffDrawMapPixels extends LayerEffect {
                     setPixelColor(event, x, y, color);
     }
 
-    private void setPixelColor(MapLayerRenderEvent event, int x, int y, java.awt.Color color) {
+    private void setPixelColor(LayerRenderEvent event, int x, int y, java.awt.Color color) {
         if (x < 0 || x > 127 || y < 0 || y > 127)
             return;
         event.getCanvas().setPixelColor(x, y, color);

@@ -7,7 +7,7 @@ import ch.njol.skript.doc.Name;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
-import com.sovdee.skriptmaps.MapLayerRenderEvent;
+import com.sovdee.skriptmaps.maps.LayerRenderEvent;
 import com.sovdee.skriptmaps.utils.LayerEffect;
 import org.bukkit.event.Event;
 import org.bukkit.map.MinecraftFont;
@@ -44,7 +44,7 @@ public class EffDrawMapContent extends LayerEffect {
     }
 
     @Override
-    protected void execute(MapLayerRenderEvent event) {
+    protected void execute(LayerRenderEvent event) {
         @Nullable Object content = this.content.getSingle(event);
         @Nullable Number x = this.x.getSingle(event);
         @Nullable Number y = this.y.getSingle(event);
