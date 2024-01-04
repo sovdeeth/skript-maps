@@ -31,34 +31,49 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public class ExprNewMapView extends SimpleExpression<MapView> {
 
     static {
-        Skript.registerExpression(ExprNewMapView.class, MapView.class, ExpressionType.SIMPLE, "[a[n]] [new] [empty] map view [in [world] %world%]");
+        Skript.registerExpression(ExprNewMapView.class, MapView.class, ExpressionType.COMBINED,
+                "[a[n]] [new] [empty] map view [in [world] %world%]",
+                "[a[n]] [new] map view (from|with) id %number%");
     }
 
-    Expression<World> world;
+    @Nullable Expression<World> world;
+    @Nullable Expression<Number> id;
 
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        world = (Expression<World>) expressions[0];
+        if (matchedPattern == 0)
+            world = (Expression<World>) expressions[0];
+        else
+            id = (Expression<Number>) expressions[0];
         return true;
     }
 
     @Override
     protected MapView @Nullable [] get(Event event) {
-        @Nullable World world = this.world.getSingle(event);
-        if (world == null)
-            return null;
+        @Nullable MapView view;
+        if (id != null) {
+            @Nullable Number id = this.id.getSingle(event);
+            if (id == null)
+                return null;
+            view = Bukkit.getMap(id.intValue());
+        } else {
+            assert world != null;
+            @Nullable World world = this.world.getSingle(event);
+            if (world == null)
+                return null;
+            view = Bukkit.createMap(world);
 
-        MapView view = Bukkit.createMap(world);
+            for (MapRenderer renderer : view.getRenderers())
+                view.removeRenderer(renderer);
 
-        for (MapRenderer renderer : view.getRenderers())
-            view.removeRenderer(renderer);
+            view.setCenterX(0);
+            view.setCenterZ(0);
+            view.setScale(MapView.Scale.NORMAL);
 
-        view.setCenterX(0);
-        view.setCenterZ(0);
-        view.setScale(MapView.Scale.NORMAL);
+            view.setTrackingPosition(false);
+            view.setUnlimitedTracking(false);
 
-        view.setTrackingPosition(false);
-        view.setUnlimitedTracking(false);
+        }
 
         return new MapView[] {view};
     }
@@ -75,6 +90,9 @@ public class ExprNewMapView extends SimpleExpression<MapView> {
 
     @Override
     public String toString(@Nullable Event event, boolean debug) {
+        if (id != null)
+            return "a new map view with id " + id.toString(event, debug);
+        assert world != null;
         return "a new map view in world " + world.toString(event, debug);
     }
 }
