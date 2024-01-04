@@ -1,0 +1,37 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id 'java'
+}
+
+group 'com.sovdee'
+version '1.0.0-alpha1'
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+    maven {
+        url 'https://repo.papermc.io/repository/maven-public/'
+    }
+    maven {
+        url 'https://repo.skriptlang.org/releases'
+    }
+}
+
+dependencies {
+    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+    compileOnly("com.github.SkriptLang:Skript:2.8.0-pre1")
+}
+
+processResources {
+    filter ReplaceTokens, tokens: ["version": project.property("version")]
+    from("lang/") {
+        include '*.lang'
+        into 'lang/'
+    }
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.compileClasspath
+    options.encoding = 'UTF-8'
+}

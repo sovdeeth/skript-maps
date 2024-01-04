@@ -1,0 +1,8 @@
+name: skript-maps
+author: Sovde
+website: https://github.com/sovdeeth/skript-maps
+description: Provides the ability to draw raw custom text and images on maps
+version: @version@
+api-version: 1.18
+main: com.sovdee.skriptmaps.SkriptMaps
+depend: [Skript]
