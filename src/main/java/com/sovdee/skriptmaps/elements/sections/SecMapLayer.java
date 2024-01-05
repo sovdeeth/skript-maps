@@ -16,7 +16,7 @@ import ch.njol.skript.lang.Variable;
 import ch.njol.util.Kleenean;
 import com.sovdee.skriptmaps.maps.LayerRenderEvent;
 import com.sovdee.skriptmaps.maps.CustomLayerRenderer;
-import com.sovdee.skriptmaps.maps.StationaryLayerRenderer;
+import com.sovdee.skriptmaps.maps.FixedLayerRenderer;
 import org.bukkit.event.Event;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -39,13 +39,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class SecMapLayer extends Section {
 
     static {
-        Skript.registerSection(SecMapLayer.class, "set %~object% to [a] [new] [:stationary] map layer");
+        Skript.registerSection(SecMapLayer.class, "set %~object% to [a] [new] [:fixed] map layer");
     }
 
     Variable<?> variable;
     Trigger trigger;
 
-    private boolean stationary = false;
+    private boolean fixed = false;
+    private boolean contextual = true; // TODO: further investigate non-contextual behavior
 
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult, SectionNode sectionNode, List<TriggerItem> triggerItems) {
@@ -62,14 +63,14 @@ public class SecMapLayer extends Section {
             Skript.error("Delays are not allowed when drawing a map layer!");
             return false;
         }
-        stationary = parseResult.hasTag("stationary");
+        fixed = parseResult.hasTag("fixed");
 
         return true;
     }
 
     @Override
     protected @Nullable TriggerItem walk(Event event) {
-        CustomLayerRenderer layer = stationary ? new StationaryLayerRenderer(trigger, true) : new CustomLayerRenderer(trigger, true);
+        CustomLayerRenderer layer = fixed ? new FixedLayerRenderer(trigger, contextual) : new CustomLayerRenderer(trigger, contextual);
         variable.change(event, new Object[] {layer}, Changer.ChangeMode.SET);
         return super.walk(event, false);
     }

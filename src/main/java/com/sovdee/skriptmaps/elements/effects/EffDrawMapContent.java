@@ -8,6 +8,7 @@ import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import com.sovdee.skriptmaps.maps.LayerRenderEvent;
+import com.sovdee.skriptmaps.maps.MapPixel;
 import com.sovdee.skriptmaps.utils.LayerEffect;
 import org.bukkit.event.Event;
 import org.bukkit.map.MinecraftFont;
@@ -28,37 +29,35 @@ public class EffDrawMapContent extends LayerEffect {
 
     static {
         Skript.registerEffect(EffDrawMapContent.class,
-                "draw %image/string% on the map at %number%, %number%"
+                "(draw|render) %image/string% on the map at %mappixel%"
         );
     }
 
     Expression<?> content;
-    Expression<Number> x, y;
+    Expression<MapPixel> pixel;
 
     @Override
     protected boolean init(Expression<?>[] expressions, int matchedPattern, ParseResult parseResult) {
         content = expressions[0];
-        x = (Expression<Number>) expressions[1];
-        y = (Expression<Number>) expressions[2];
+        pixel = (Expression<MapPixel>) expressions[1];
         return true;
     }
 
     @Override
     protected void execute(LayerRenderEvent event) {
         @Nullable Object content = this.content.getSingle(event);
-        @Nullable Number x = this.x.getSingle(event);
-        @Nullable Number y = this.y.getSingle(event);
-        if (content == null || x == null || y == null)
+        @Nullable MapPixel pixel = this.pixel.getSingle(event);
+        if (content == null || pixel == null)
             return;
 
-        if (content instanceof Image)
-            event.getCanvas().drawImage(x.intValue(), y.intValue(), (Image) content);
-        else if (content instanceof String)
-            event.getCanvas().drawText(x.intValue(), y.intValue(), MinecraftFont.Font, (String) content);
+        if (content instanceof Image image)
+            event.getCanvas().drawImage(pixel.x(), pixel.y(), image);
+        else if (content instanceof String text)
+            event.getCanvas().drawText(pixel.x(), pixel.y(), MinecraftFont.Font, text);
     }
 
     @Override
     public String toString(@Nullable Event event, boolean debug) {
-        return "draw " + content.toString(event, debug) + " on the map at " + x.toString(event, debug) + ", " + y.toString(event, debug);
+        return "draw " + content.toString(event, debug) + " on the map at " + pixel.toString(event, debug);
     }
 }

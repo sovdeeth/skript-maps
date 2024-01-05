@@ -5,16 +5,17 @@ import ch.njol.skript.util.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapView;
 import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.awt.*;
 
 public class LayerRenderEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
     private final MapView mapView;
-    private final MapCanvas canvas;
+    private final CustomMapCanvas canvas;
     private final Player player;
 
     static {
@@ -30,9 +31,15 @@ public class LayerRenderEvent extends Event {
                 return event.getPlayer();
             }
         }, EventValues.TIME_NOW);
+        EventValues.registerEventValue(LayerRenderEvent.class, Image.class, new Getter<>() {
+            @Override
+            public Image get(LayerRenderEvent event) {
+                return event.getCanvas().getImage();
+            }
+        }, EventValues.TIME_NOW);
     }
 
-    public LayerRenderEvent(MapView mapView, MapCanvas canvas, Player player) {
+    public LayerRenderEvent(MapView mapView, CustomMapCanvas canvas, Player player) {
         super();
         this.mapView = mapView;
         this.canvas = canvas;
@@ -43,7 +50,8 @@ public class LayerRenderEvent extends Event {
         return mapView;
     }
 
-    public MapCanvas getCanvas() {
+
+    public CustomMapCanvas getCanvas() {
         return canvas;
     }
 

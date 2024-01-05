@@ -18,8 +18,10 @@ public class CustomLayerRenderer extends MapRenderer {
 
     @Override
     public void render(@NonNull MapView map, @NonNull MapCanvas canvas, @NonNull Player player) {
-        LayerRenderEvent event = new LayerRenderEvent(map, canvas, player);
+        CustomMapCanvas customCanvas = new CustomMapCanvas(canvas);
+        LayerRenderEvent event = new LayerRenderEvent(map, customCanvas, player);
         trigger.execute(event);
+        customCanvas.render();
     }
 
 }

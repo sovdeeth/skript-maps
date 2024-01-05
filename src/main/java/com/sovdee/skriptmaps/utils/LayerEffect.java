@@ -5,9 +5,10 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
-import com.sovdee.skriptmaps.maps.LayerRenderEvent;
 import com.sovdee.skriptmaps.SkriptMaps;
+import com.sovdee.skriptmaps.maps.LayerRenderEvent;
 import org.bukkit.event.Event;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public abstract class LayerEffect extends Effect {
 
@@ -36,5 +37,8 @@ public abstract class LayerEffect extends Effect {
     }
 
     protected abstract void execute(LayerRenderEvent event);
+
+    @Override
+    public abstract String toString(@Nullable Event event, boolean debug);
 
 }
