@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapView;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.awt.*;
 import java.util.Map;
@@ -15,8 +16,8 @@ public class FixedLayerRenderer extends CustomLayerRenderer  {
 
     private final Map<Player, Image> rendered;
 
-    public FixedLayerRenderer(Trigger trigger, boolean contextual) {
-        super(trigger, contextual);
+    public FixedLayerRenderer(Trigger trigger, @Nullable Object variablesMap, boolean contextual) {
+        super(trigger, variablesMap, contextual);
         rendered = new ConcurrentHashMap<>();
     }
 

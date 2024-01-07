@@ -8,7 +8,7 @@ public abstract class GraphicsEffect extends LayerEffect {
 
     @Override
     protected void execute(LayerRenderEvent event) {
-        Graphics graphics = event.getCanvas().getImage().getGraphics();
+        Graphics graphics = event.getCanvas().getGraphics();
         execute(event, graphics);
         graphics.dispose();
     }

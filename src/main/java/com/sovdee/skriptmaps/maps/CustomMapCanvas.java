@@ -104,7 +104,7 @@ public class CustomMapCanvas implements MapCanvas {
 
     @Override
     public void drawImage(int x, int y, @NotNull Image image) {
-        this.image = ImageUtils.copyImage(image);
+        getGraphics().drawImage(image, x, y, null);
     }
 
     @Override

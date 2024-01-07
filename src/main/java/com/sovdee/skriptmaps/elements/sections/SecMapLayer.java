@@ -13,6 +13,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.Trigger;
 import ch.njol.skript.lang.TriggerItem;
 import ch.njol.skript.lang.Variable;
+import ch.njol.skript.variables.Variables;
 import ch.njol.util.Kleenean;
 import com.sovdee.skriptmaps.maps.LayerRenderEvent;
 import com.sovdee.skriptmaps.maps.CustomLayerRenderer;
@@ -28,7 +29,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
         "Creates a new map layer. This is not a map item, but a map layer that can be used to render a map.",
         "The code inside this section will be run every time the map is rendered, which is every five ticks for " +
         "each map item in a player's inventory and approximately every 50 ticks for each map on an item frame.",
-        "These can add up quickly, so keep your code as efficient as possible inside the section."
+        "These can add up quickly, so keep your code as efficient as possible inside the section.",
+        "Alternatively, you can use the \"fixed\" tag to render the layer only once per player.",
+        "",
+        "Also, note that local variables will persist through each render. This allows you to, for example, keep " +
+        "track of how many times the layer has been rendered by adding 1 to a local variable each time."
 })
 @Examples({
         "set {_layer} to a new map layer:",
@@ -70,7 +75,8 @@ public class SecMapLayer extends Section {
 
     @Override
     protected @Nullable TriggerItem walk(Event event) {
-        CustomLayerRenderer layer = fixed ? new FixedLayerRenderer(trigger, contextual) : new CustomLayerRenderer(trigger, contextual);
+        @Nullable Object variablesMap = Variables.copyLocalVariables(event);
+        CustomLayerRenderer layer = fixed ? new FixedLayerRenderer(trigger, variablesMap, contextual) : new CustomLayerRenderer(trigger, variablesMap, contextual);
         variable.change(event, new Object[] {layer}, Changer.ChangeMode.SET);
         return super.walk(event, false);
     }
