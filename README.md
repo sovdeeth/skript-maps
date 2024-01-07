@@ -19,14 +19,25 @@ command test:
         set {_item} to a filled map
         set {_view} to new map view in world "world"
 
-        set {_layer} to new map layer:
-            colour pixels between 20, 20 and 108, 20 on the map blue
-            colour pixels between 20, 20 and 64, 44  on the map blue
-            colour pixels between 64, 44 and 108, 20 on the map blue
-            colour pixels in radius 20 of 100, 100 on the map green
-            colour pixel 100, -100 on the map red
+        set {_layer} to new fixed map layer:
+            draw resized map image named "windmillsmall.jpg" on the map at pixel 0, 0
+            
+        set {_x} to 0
+        set {_y} to 0 
+        set {_layer2} to new map layer:
+            colour pixels between pixel 20, 20 and pixel 108, 20 on the map blue
+            colour pixels between pixel 20, 20 and pixel 64, 44  on the map blue
+            colour pixels between pixel 64, 44 and pixel 108, 20 on the map blue
+            colour pixels in radius 20 of pixel 100, 100 on the map green
+            render an oval with width 10 and height 25 at pixel 50, 80 on the map in rgb(183,50,100)
+            colour pixel {_x}, {_y} on the map red
+            add 1 to {_x}
+            if {_x} is 128:
+                set {_x} to 0
+                add 1 to {_y}
 
-        set map layers of {_view} to {_layer}
+
+        set map layers of {_view} to {_layer}, {_layer2}
 
         set map view of {_item} to {_view}
         give {_item} to player
@@ -36,7 +47,7 @@ command test:
 ### Effects
 #### Draw Map Content
 ```
-draw %image/string% on the map at %number%, %number%"
+(draw|render) %image/string% on the map at %mappixel%
 ```
 Draws text or images on a map. Must be used in a map layer section.
 
@@ -44,16 +55,14 @@ Draws text or images on a map. Must be used in a map layer section.
 ```
 set {_img} to the map image from file "myimage.png"
 set {_layer} to a new map layer:
-  draw {_img} on the map at 0, 0
-  draw "%mapColor(red)%%Hello, world!" on the map at 40, 60
+  draw {_img} on the map at pixel 0, 0
+  draw "%mapColor(red)%%Hello, world!" on the map at pixel 40, 60
 ```
 ***
 
 #### Draw Map Pixels
 ```
-colo[u]r [the] pixel [at] %number%,[ ]%number% on the map [as] %color%
-colo[u]r [the] pixels (between|within) [[the] pixel [at]] %number%,[ ]%number% and [[the] pixel [at]] %number%,[ ]%number% on the map [as] %color%
-colo[u]r [the] pixels in radius %number% [of|around] [[the] pixel [at]] %number%,[ ]%number% on the map [as] %color%
+colo[u]r %mappixels% on the map [as] %color%
 ```
 Sets the color of one or more pixels on a map. Must be used in a map layer section.
 
@@ -61,8 +70,52 @@ Sets the color of one or more pixels on a map. Must be used in a map layer secti
 ```
 set {_layer} to a new map layer:
     color the pixel at 0, 0 on the map as red
-    color the pixels between 0, 0 and 127, 127 on the map red
-    color the pixels in radius 10 of 64, 64 on the map rgb(30, 50, 80)
+```
+***
+
+#### Draw Map Line
+```
+colo[u]r [the] pixels (between|from) %mappixel% (and|to) %mappixel% on the map [as] %color%
+(draw|render) [a] line (between|from) %mappixel% (and|to) %mappixel% on the map [with|in|using] %color%
+```
+Draws a line on a map. Must be used in a map layer section.
+
+**Examples**
+```
+set {_layer} to a new map layer:
+    colour the pixels between pixel 0, 0 and pixel 127, 127 on the map red
+    draw a line from pixel 88, 20 to pixel 40, 20 on the map using red
+```
+***
+
+#### Draw Map Oval
+```
+colo[u]r [the] pixels in radius %number% [of|around] %mappixel% on the map [as] %color%
+(draw|render) [a] [solid] circle (with|of) radius %number% (at|around) %mappixel% on the map [with|in|using] %color%
+(draw|render) [a[n]] [solid] oval (with|of) width %number% and height %number% (at|around) %mappixel% on the map [with|in|using] %color%
+```
+Draws an oval or a circle on a map. Must be used in a map layer section.
+
+**Examples**
+```
+set {_layer} to a new map layer:
+    colour the pixels in radius 25 of pixel 127, 127 on the map red
+    draw an oval of width 20 and height 30 around pixel 40, 20 on the map using red
+```
+***
+
+#### Draw Map Rectangle
+```
+colo[u]r [the] pixels witihin %mappixel% (and|to) %mappixel% on the map [as] %color%
+(draw|render) [a] [solid] rect[angle] (within|from) %mappixel% (and|to) %mappixel% on the map [with|in|using] %color%
+```
+Draws a rectangle on a map. Must be used in a map layer section.
+
+**Examples**
+```
+set {_layer} to a new map layer:
+    colour the pixels within pixel 0, 0 and pixel 127, 127 on the map red
+    draw a rectangle from pixel 88, 20 to pixel 40, 40 on the map using red
 ```
 ***
 
@@ -78,7 +131,22 @@ If `resized` is used, the image will be resized to 128x128 pixels, which is the 
 ```
 set {_img} to the resized map image from file "myimage.png"
 set {_layer} to a new map layer:
-    draw {_img} on the map at 0, 0
+    draw {_img} on the map at pixel 0, 0
+```
+***
+
+#### Map Pixel
+```
+[the] [map] pixel [at] %number%,[ ]%number%
+```
+Represents the coordinates of a pixel on a map.
+
+**Examples**
+```
+set {_pixel} to the map pixel at 0, 0
+set {_layer} to a new map layer:
+    colour the pixel at {_pixel} on the map blue
+    draw a rectangle from pixel 100, 100 to {_pixel} on the map using blue
 ```
 ***
 
@@ -127,15 +195,18 @@ set {_map}'s map view to {_view}
 #### New Map View
 ```
 [a[n]] [new] [empty] map view [in [world] %world%]
+[a[n]] [new] map view (from|with) id %number%
 ```
 Creates a new empty map view. This is not a map item, but a map view that can be used to render a map.
 To assign this map view to a map item, use `set {_map}'s map view to {_view}`.
+
+This can also be used to get a map view from its id. If a map view with the given id does not exist, this will return null.
 
 **Examples**
 ```
 set {_view} to a new map view
 set {_layer} to a new map layer:
-    color pixels within 0, 0 and 127, 127  on the map in radius 10 of 64, 64
+    color pixels within pixel 0, 0 and pixel 127, 127 on the map blue
 add {_layer} to map layers of {_view}
 set {_map}'s map view to {_view}
 ```
@@ -144,19 +215,22 @@ set {_map}'s map view to {_view}
 ### Sections
 #### New Map Layer Section
 ```
-set %variable% to [a] [new] map layer
+set %variable% to [a] [new] [fixed] map layer
 ```
 Creates a new map layer. This is not a map item, but a map layer that can be used to render a map.
 
-The code inside this section will be run every time the map is rendered, which is every five ticks for
+The code inside this section will be run every time the map is rendered, which is every five ticks for 
 each map item in a player's inventory and approximately every 50 ticks for each map on an item frame.
 
-These can add up quickly, so keep your code as efficient as possible inside the section.
+These can add up quickly, so keep your code as efficient as possible inside the section. Alternatively, you can use the "fixed" tag to render the layer only once per player.
+
+Also, note that local variables will persist through each render. This allows you to, for example, keep track 
+of how many times the layer has been rendered by adding 1 to a local variable each time.
 
 **Examples**
 ```
 set {_layer} to a new map layer:
-    color pixels within 0, 0 and 127, 127 on the map in radius 10 of 64, 64
+    color pixels within pixel 0, 0 and pixel 127, 127 on the map blue
 add {_layer} to map layers of {_view}
 ```
 ***
