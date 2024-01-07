@@ -10,6 +10,10 @@ import com.sovdee.skriptmaps.maps.LayerRenderEvent;
 import org.bukkit.event.Event;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+/**
+ * An {@link Effect} used to modify a map layer.
+ * Provides a guarantee that the effect is being executed within a map layer section, and provides a {@link LayerRenderEvent} to work with.
+ */
 public abstract class LayerEffect extends Effect {
 
     @Override
@@ -33,7 +37,6 @@ public abstract class LayerEffect extends Effect {
         } else {
             SkriptMaps.warning("Tried to execute a layer effect without a layer render event!");
         }
-
     }
 
     protected abstract void execute(LayerRenderEvent event);

@@ -37,7 +37,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 })
 @Examples({
         "set {_layer} to a new map layer:",
-            "\tcolor pixels within 0, 0 and 127, 127 on the map in radius 10 of 64, 64",
+            "\tcolor pixels within pixel 0, 0 and pixel 127, 127 on the map as gold",
         "add {_layer} to map layers of {_view}"
 })
 @Since("1.0.0")

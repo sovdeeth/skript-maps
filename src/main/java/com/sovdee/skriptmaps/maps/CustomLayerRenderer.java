@@ -9,6 +9,10 @@ import org.bukkit.map.MapView;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+/**
+ * A custom map layer renderer.
+ * Renders a map layer using a trigger.
+ */
 public class CustomLayerRenderer extends MapRenderer {
 
     Trigger trigger;

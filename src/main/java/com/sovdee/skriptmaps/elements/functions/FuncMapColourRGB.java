@@ -12,7 +12,7 @@ public class FuncMapColourRGB extends SimpleJavaFunction<String> {
         Functions.registerFunction(new FuncMapColourRGB()
                 .description("Returns a map colour string from red, green, and blue values, for use in colouring text on maps. This colour " +
                         "will not be exact, as there is a limited number of colours available on maps.")
-                .examples("draw \"%mapColorRGB(1, 30, 230)%text\" at 0, 0 on the map")
+                .examples("draw \"%mapColorRGB(1, 30, 230)%text\" at pixel 0, 0 on the map")
                 .since("1.0.0")
         );
     }

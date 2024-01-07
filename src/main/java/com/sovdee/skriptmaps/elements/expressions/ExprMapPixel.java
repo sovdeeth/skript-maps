@@ -1,6 +1,10 @@
 package com.sovdee.skriptmaps.elements.expressions;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -10,6 +14,15 @@ import com.sovdee.skriptmaps.maps.MapPixel;
 import org.bukkit.event.Event;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+@Name("Map Pixel")
+@Description("Represents the coordinates of a pixel on a map.")
+@Examples({
+        "set {_pixel} to the map pixel at 0, 0",
+        "set {_layer} to a new map layer:",
+            "\tcolo[u]r the pixel at {_pixel} on the map blue",
+            "\tdraw a rectangle from pixel 100, 100 to {_pixel} on the map using blue",
+})
+@Since("1.0.0")
 public class ExprMapPixel extends SimpleExpression<MapPixel> {
 
     static {

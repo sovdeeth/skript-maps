@@ -12,6 +12,11 @@ import java.awt.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * A custom map layer renderer.
+ * Renders a map layer using a trigger.
+ * This renderer is fixed, meaning the trigger is only executed once for each player and the result is cached.
+ */
 public class FixedLayerRenderer extends CustomLayerRenderer  {
 
     private final Map<Player, Image> rendered;

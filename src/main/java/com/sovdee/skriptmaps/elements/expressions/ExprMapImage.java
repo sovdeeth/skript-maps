@@ -28,7 +28,7 @@ import java.io.IOException;
 @Examples({
         "set {_img} to the resized map image from file \"myimage.png\"",
         "set {_layer} to a new map layer:",
-            "\tdraw {_img} on the map at 0, 0"
+            "\tdraw {_img} on the map at pixel 0, 0"
 })
 @Since("1.0.0")
 public class ExprMapImage extends SimpleExpression<Image> {

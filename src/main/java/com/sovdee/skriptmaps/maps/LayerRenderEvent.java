@@ -10,6 +10,9 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.awt.*;
 
+/**
+ * An {@link Event} used to store information about the rendering of a map layer.
+ */
 public class LayerRenderEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();

@@ -6,15 +6,19 @@ import org.bukkit.map.MapCursorCollection;
 import org.bukkit.map.MapFont;
 import org.bukkit.map.MapPalette;
 import org.bukkit.map.MapView;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * A custom map canvas, backed by a BufferedImage and a true MapCanvas.
+ */
 public class CustomMapCanvas implements MapCanvas {
 
-    private BufferedImage image;
+    private final BufferedImage image;
     private final MapCanvas canvas;
 
     public CustomMapCanvas(MapCanvas canvas) {
@@ -23,28 +27,42 @@ public class CustomMapCanvas implements MapCanvas {
         readFromCanvas();
     }
 
+    /**
+     * Writes the image to the backing canvas.
+     */
     public void render() {
         writeToCanvas();
     }
 
+    /**
+     * Draws the backing image to the canvas at (0, 0).
+     */
     private void writeToCanvas() {
         canvas.drawImage(0, 0, image);
     }
 
+    /**
+     * Reads the current state of the backing canvas into the backing image.
+     */
     private void readFromCanvas() {
         ImageUtils.getImage(canvas, image);
     }
 
+    /**
+     * Gets the Graphics2D object for the backing image. This can be used to draw on the image.
+     * @return The Graphics2D object for the backing image.
+     */
+    @Contract(value = "-> new", pure = true)
     public Graphics2D getGraphics() {
         return image.createGraphics();
     }
 
+    /**
+     * Gets the backing image.
+     * @return The backing image.
+     */
     public BufferedImage getImage() {
         return image;
-    }
-
-    public void setImage(BufferedImage image) {
-        this.image = image;
     }
 
     @Override
@@ -84,12 +102,14 @@ public class CustomMapCanvas implements MapCanvas {
     }
 
     @Override
+    @Deprecated
     public void setPixel(int x, int y, byte color) {
         Color awtColor = MapPalette.getColor(color);
         setPixelColor(x, y, awtColor);
     }
 
     @Override
+    @Deprecated
     public byte getPixel(int x, int y) {
         @Nullable Color color = getPixelColor(x, y);
         if (color == null)
@@ -98,6 +118,7 @@ public class CustomMapCanvas implements MapCanvas {
     }
 
     @Override
+    @Deprecated
     public byte getBasePixel(int x, int y) {
         return canvas.getBasePixel(x, y);
     }
@@ -109,6 +130,7 @@ public class CustomMapCanvas implements MapCanvas {
 
     @Override
     public void drawText(int x, int y, @NotNull MapFont font, @NotNull String text) {
+        // ensure the canvas is up-to-date, so we can use the backing canvas to draw the text
         writeToCanvas();
         canvas.drawText(x, y, font, text);
         readFromCanvas();
