@@ -21,8 +21,8 @@ import java.awt.*;
 @Examples({
         "set {_img} to the map image from file \"myimage.png\"",
         "set {_layer} to a new map layer:",
-            "\tdraw {_img} on the map at 0, 0",
-            "\tdraw \"%mapColor(red)%%Hello, world!\" on the map at 40, 60",
+            "\tdraw {_img} on the map at pixel 0, 0",
+            "\tdraw \"%mapColor(red)%%Hello, world!\" on the map at pixel 40, 60",
 })
 @Since("1.0.0")
 public class EffDrawMapContent extends LayerEffect {

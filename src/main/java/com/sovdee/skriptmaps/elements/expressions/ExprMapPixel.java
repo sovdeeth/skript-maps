@@ -19,7 +19,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 @Examples({
         "set {_pixel} to the map pixel at 0, 0",
         "set {_layer} to a new map layer:",
-            "\tcolo[u]r the pixel at {_pixel} on the map blue",
+            "\tcolour the pixel at {_pixel} on the map blue",
             "\tdraw a rectangle from pixel 100, 100 to {_pixel} on the map using blue",
 })
 @Since("1.0.0")

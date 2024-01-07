@@ -20,9 +20,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 @Description("Sets the color of one or more pixels on a map. Must be used in a map layer section.")
 @Examples({
         "set {_layer} to a new map layer:",
-            "\tcolor the pixel at 0, 0 on the map as red",
-            "\tcolor the pixels between 0, 0 and 127, 127 on the map red",
-            "\tcolor the pixels in radius 10 of 64, 64 on the map rgb(30, 50, 80)",
+            "\tcolor the pixel at 0, 0 on the map as red"
 })
 @Since("1.0.0")
 public class EffDrawMapPixels extends LayerEffect {

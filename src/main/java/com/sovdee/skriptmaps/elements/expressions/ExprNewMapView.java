@@ -20,12 +20,13 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 @Name("New Map View")
 @Description({
         "Creates a new empty map view. This is not a map item, but a map view that can be used to render a map.",
-        "To assign this map view to a map item, use `set {_map}'s map view to {_view}`."
+        "To assign this map view to a map item, use `set {_map}'s map view to {_view}`.",
+        "This can also be used to get a map view from its id. If a map view with the given id does not exist, this will return null."
 })
 @Examples({
         "set {_view} to a new map view",
         "set {_layer} to a new map layer:",
-            "\tcolor pixels within 0, 0 and 127, 127  on the map in radius 10 of 64, 64",
+            "\tcolor pixels within pixel 0, 0 and pixel 127, 127 on the map blue",
         "add {_layer} to map layers of {_view}",
         "set {_map}'s map view to {_view}"
 })
@@ -58,6 +59,8 @@ public class ExprNewMapView extends SimpleExpression<MapView> {
             if (id == null)
                 return null;
             view = Bukkit.getMap(id.intValue());
+            if (view == null)
+                return null;
         } else {
             assert world != null;
             @Nullable World world = this.world.getSingle(event);

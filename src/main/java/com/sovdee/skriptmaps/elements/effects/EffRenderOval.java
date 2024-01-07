@@ -30,7 +30,7 @@ public class EffRenderOval extends GraphicsEffect {
     static {
         Skript.registerEffect(EffRenderOval.class,
                 "colo[u]r [the] pixels in radius %number% [of|around] %mappixel% on the map [as] %color%",
-                "(draw|render) [a[n]] [:solid] circle (with|of) radius %number% (at|around) %mappixel% on the map [with|in|colo[u]red] %color%",
+                "(draw|render) [a] [:solid] circle (with|of) radius %number% (at|around) %mappixel% on the map [with|in|using] %color%",
                 "(draw|render) [a[n]] [:solid] oval (with|of) width %number% and height %number% (at|around) %mappixel% on the map [with|in|using] %color%"
         );
     }
